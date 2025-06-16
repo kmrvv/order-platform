@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  liquibase:
+    enabled: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/productdb
+    username: auth_user
+    password: secret
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath*:mybatis/mappers/*.xml

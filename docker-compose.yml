@@ -1,0 +1,68 @@
+services:
+  auth-db:
+    image: postgres:13.3
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+  product-db:
+    image: postgres:13.3
+    container_name: product-db
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5433:5432"
+
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    environment:
+      # Параметры БД
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/authdb
+      SPRING_DATASOURCE_USERNAME: auth_user
+      SPRING_DATASOURCE_PASSWORD: secret
+
+#      # Eureka (если есть сервис-дискавери)
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+#      # Config Server (опционально, если развернёте позже)
+#      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+
+      # Порт приложения
+      SERVER_PORT: 9001
+    depends_on:
+      - auth-db
+      # - eureka
+      # - config-server
+    ports:
+      - "9001:9001"
+
+  # (Опционально) Eureka Server для сервис-дискавери
+  # eureka:
+  #   image: springcloud/eureka:latest
+  #   container_name: eureka
+  #   ports:
+  #     - "8761:8761"
+
+  # (Опционально) Config Server
+  # config-server:
+  #   build:
+  #     context: ./config-server
+  #     dockerfile: Dockerfile
+  #   container_name: config-server
+  #   ports:
+  #     - "8888:8888"
+  #   depends_on:
+  #     - eureka
+
+#volumes:
+#  auth-db-data:

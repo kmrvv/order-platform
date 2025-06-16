@@ -1,0 +1,24 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authdb
+    username: auth_user
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+#liquibase:
+#  change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+jwt:
+  secret: "aGVsbG9XZGJsS2V5K3RvVXNlU2lnbmF0dXJlMTIzIQ=="
+  expiration-ms: 3600000  # 1 час
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.platform.repository.ProductRepository">
+
+    <resultMap id="productResultMap" type="com.example.platform.entity.Product">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="description" column="description" />
+        <result property="price" column="price" />
+        <result property="sku" column="sku" />
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+
+
+    <insert id="save" parameterType="com.example.platform.entity.Product"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO product (name, description, price, sku, created_at, updated_at)
+        VALUES (#{name}, #{description}, #{price}, #{sku}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="productResultMap">
+        SELECT id, name, description, price, sku, created_at
+        FROM product
+        WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.example.platform.entity.Product">
+        UPDATE product
+        SET
+            name = #{name},
+            description = #{description},
+            price = #{price},
+            sku = #{sku},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM product
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findBySku" parameterType="string" resultMap="productResultMap">
+        SELECT id, name, description, price, sku, created_at
+        FROM product
+        WHERE sku = #{sku}
+    </select>
+
+    <select id="findAll" resultMap="productResultMap">
+        SELECT id, name, description, price, sku, created_at
+        FROM product
+        ORDER BY created_at DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="findByNameContaining" parameterType="string" resultMap="productResultMap">
+        SELECT id, name, description, price, sku, created_at
+        FROM product
+        WHERE LOWER(name) LIKE LOWER(#{namePattern})
+    </select>
+
+</mapper>
