@@ -17,6 +17,15 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5433:5432"
+  inventory-db:
+    image: postgres:13.3
+    container_name: inventory-db
+    environment:
+      POSTGRES_DB: inventorydb
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5434:5432"
 
 
   # Auth Service

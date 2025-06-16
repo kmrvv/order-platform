@@ -20,7 +20,6 @@
         <liquibase.version>4.32.0</liquibase.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <postgresql.version>42.7.7</postgresql.version>
-        <hibernate.version>7.0.1.Final</hibernate.version>
         <jwt.version>0.12.6</jwt.version>
         <mybatis.version>3.0.4</mybatis.version>
     </properties>
@@ -123,7 +122,6 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>${hibernate.version}</version>
             </dependency>
 
             <!-- JWT support -->

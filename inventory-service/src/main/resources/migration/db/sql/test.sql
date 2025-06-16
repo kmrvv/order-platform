@@ -1,0 +1,1 @@
+insert into inventory (product_id, available) values (1, 100);
