@@ -26,34 +26,94 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5434:5432"
-
-
-  # Auth Service
-  auth-service:
-    build:
-      context: ./auth-service
-      dockerfile: Dockerfile
-    container_name: auth-service
+  payments-db:
+    image: postgres:13.3
+    container_name: payments-db
     environment:
-      # Параметры БД
-      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/authdb
-      SPRING_DATASOURCE_USERNAME: auth_user
-      SPRING_DATASOURCE_PASSWORD: secret
-
-#      # Eureka (если есть сервис-дискавери)
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-
-#      # Config Server (опционально, если развернёте позже)
-#      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-
-      # Порт приложения
-      SERVER_PORT: 9001
-    depends_on:
-      - auth-db
-      # - eureka
-      # - config-server
+      POSTGRES_DB: paymentsdb
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: secret
     ports:
-      - "9001:9001"
+      - "5435:5432"
+
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.6.1
+    container_name: zookeeper
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
+    ports:
+      - "22181:2181"
+    networks:
+      - kafka_network
+
+  kafka:
+    image: docker.io/bitnami/kafka:2.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_HEAP_OPTS: -Xmx512m -Xms512m
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_LISTENERS: INTERNAL://:9092,EXTERNAL://:29092
+      KAFKA_CFG_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://${DOCKER_HOST_IP:-localhost}:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+    networks:
+      - kafka_network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    build:
+      network: host
+    container_name: kafka-ui
+    ports:
+      - "8090:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - kafka_network
+
+networks:
+  kafka_network:
+    driver: bridge
+
+
+#  # Auth Service
+#  auth-service:
+#    build:
+#      context: ./auth-service
+#      dockerfile: Dockerfile
+#    container_name: auth-service
+#    environment:
+#      # Параметры БД
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/authdb
+#      SPRING_DATASOURCE_USERNAME: auth_user
+#      SPRING_DATASOURCE_PASSWORD: secret
+#
+##      # Eureka (если есть сервис-дискавери)
+##      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+#
+##      # Config Server (опционально, если развернёте позже)
+##      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+#
+#      # Порт приложения
+#      SERVER_PORT: 9001
+#    depends_on:
+#      - auth-db
+#      # - eureka
+#      # - config-server
+#    ports:
+#      - "9001:9001"
 
   # (Опционально) Eureka Server для сервис-дискавери
   # eureka:
