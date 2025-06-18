@@ -16,6 +16,7 @@
         <module>product-service</module>
         <module>inventory-service</module>
         <module>billing-service</module>
+        <module>order-service</module>
     </modules>
 	<properties>
 		<java.version>21</java.version>

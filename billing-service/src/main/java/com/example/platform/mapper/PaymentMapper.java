@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
@@ -15,4 +16,6 @@ public interface PaymentMapper {
     @Mapping(target = "createdAt", source = "createdAt")
     @Mapping(target = "id", ignore = true)
     Payment toPayment(PaymentRequest paymentRequest, String status, OffsetDateTime createdAt);
+
+    PaymentRequest toPaymentRequest(Long orderId, BigDecimal amount);
 }

@@ -8,6 +8,7 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
+
   product-db:
     image: postgres:13.3
     container_name: product-db
@@ -17,6 +18,7 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5433:5432"
+
   inventory-db:
     image: postgres:13.3
     container_name: inventory-db
@@ -26,6 +28,7 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5434:5432"
+
   payments-db:
     image: postgres:13.3
     container_name: payments-db
@@ -35,6 +38,16 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5435:5432"
+
+  order-db:
+    image: postgres:13.3
+    container_name: order-db
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5436:5432"
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.6.1

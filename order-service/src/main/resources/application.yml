@@ -1,0 +1,29 @@
+server:
+  port: 8084
+
+grpc:
+  client:
+    billing-service:
+      address: static://localhost:6565
+      enableKeepAlive: true
+      negotiationType: plaintext
+
+soap:
+  product-service:
+    uri: http://localhost:8081/ws
+
+feign:
+  client:
+    config:
+      inventory-service:
+        url: http://localhost:8082
+
+spring:
+  liquibase:
+    enabled: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5436/orderdb
+    username: auth_user
+    password: secret

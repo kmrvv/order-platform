@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/products"
+           xmlns:tns="http://example.com/products"
+           elementFormDefault="qualified">
+
+    <xs:complexType name="productDto">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+            <xs:element name="price" type="xs:decimal"/>
+            <xs:element name="sku" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="createProductRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="product" type="tns:productDto"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="createProductResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="product" type="tns:productDto"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+
+    <xs:element name="getProductRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="getProductResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="product" type="tns:productDto"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateProductRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="product" type="tns:productDto"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="updateProductResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="product" type="tns:productDto"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteProductRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="deleteProductResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="status" type="xs:string"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+
+    <xs:element name="listProductsRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="limit" type="xs:int"/>
+            <xs:element name="offset" type="xs:int"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="listProductsResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="products" type="tns:productDto" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+
+    <xs:element name="searchProductsRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="namePattern" type="xs:string"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="searchProductsResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="products" type="tns:productDto" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+
+    <xs:element name="getProductBySkuRequest">
+        <xs:complexType><xs:sequence>
+            <xs:element name="sku" type="xs:string"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+    <xs:element name="getProductBySkuResponse">
+        <xs:complexType><xs:sequence>
+            <xs:element name="product" type="tns:productDto"/>
+        </xs:sequence></xs:complexType>
+    </xs:element>
+</xs:schema>

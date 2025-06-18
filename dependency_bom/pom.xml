@@ -22,6 +22,9 @@
         <postgresql.version>42.7.7</postgresql.version>
         <jwt.version>0.12.6</jwt.version>
         <mybatis.version>3.0.4</mybatis.version>
+        <feign.version>4.3.0</feign.version>
+        <grpc.version>1.72.0</grpc.version>
+        <protobuf-java.version>4.30.2</protobuf-java.version>
     </properties>
 
     <dependencyManagement>
@@ -31,6 +34,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${feign.version}</version>
             </dependency>
 
             <dependency>
@@ -154,6 +163,47 @@
                 <artifactId>mybatis-spring-boot-starter-test</artifactId>
                 <version>${mybatis.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+
+            <!-- gRPC Dependencies -->
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-spring-boot-starter</artifactId>
+                <version>2.15.0.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-client-spring-boot-starter</artifactId>
+                <version>2.15.0.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-netty-shaded</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-protobuf</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-stub</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-census</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <!-- Protobuf Java -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf-java.version}</version>
             </dependency>
 
         </dependencies>
