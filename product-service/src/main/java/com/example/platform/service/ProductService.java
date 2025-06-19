@@ -1,5 +1,6 @@
 package com.example.platform.service;
 
+import com.example.platform.dto.ProductCreatedEvent;
 import com.example.platform.exception.ProductNotFoundException;
 import com.example.platform.entity.Product;
 import com.example.platform.exception.ProductValidationException;
@@ -26,6 +27,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final Validator validator;
+    private final ProductKafkaProducer productKafkaProducer;
 
     @Transactional
     public void createProduct(ProductDto dto) {
@@ -40,6 +42,9 @@ public class ProductService {
         product.setUpdatedAt(OffsetDateTime.now());
         productRepository.save(product);
         log.info("ProductService:   Creating new product with id: {}", dto.getId());
+
+        ProductCreatedEvent productCreatedEvent = productMapper.toProductCreatedEvent(product);
+        productKafkaProducer.sendProductCreated(productCreatedEvent);
     }
 
 

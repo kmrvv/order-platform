@@ -9,6 +9,15 @@ spring:
     url: jdbc:postgresql://localhost:5433/productdb
     username: auth_user
     password: secret
+  kafka:
+    bootstrap-servers: localhost:29092
+    topics:
+      product-created: product-created-topic
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
